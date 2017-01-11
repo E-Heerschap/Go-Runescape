@@ -37,11 +37,11 @@ type timeTrendPercentage struct {
 	Change string `json:"change"`
 }
 
-func GetItemDetail(itemID int, e error) (itemDetail ItemDetail, err error){
+func GetItemDetail(itemID int64) (itemDetail ItemDetail, err error){
 
 	//Creating URL for request.
 	stringWriter := bytes.NewBufferString("http://services.runescape.com/m=itemdb_rs/api/catalogue/detail.json?item=")
-	itemIdString := strconv.FormatInt(itemDetail, 10)
+	itemIdString := strconv.FormatInt(itemID, 10)
 	stringWriter.WriteString(itemIdString)
 
 	resp, err := http.Get(stringWriter.String())
@@ -52,7 +52,7 @@ func GetItemDetail(itemID int, e error) (itemDetail ItemDetail, err error){
 
 	respBytes, err := ioutil.ReadAll(resp.Body)
 
-	err = json.Unmarshal(respBytes, itemDetail)
+	err = json.Unmarshal(respBytes, &itemDetail)
 
 	return itemDetail, err
 }
