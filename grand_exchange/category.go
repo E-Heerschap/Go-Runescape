@@ -24,12 +24,12 @@ type categoryJson struct {
 //Example: {"letter":"#","items":0}
 type categoryLetterItem struct {
 	Letter string `json:"letter"`
-	Items int `json:"items"`
+	Items int64 `json:"items"`
 }
 
-//getItemCountForLetter returns the amount of items found in the category starting
+//GetItemCountForLetter returns the amount of items found in the category starting
 //with a specific character.
-func (c *category) GetItemCountForLetter(letter byte) (itemAmount int, err error){
+func (c *category) GetItemCountForLetter(letter byte) (itemAmount int64, err error){
 
 	if letter == '#' {
 		return c.alpha[0].Items, nil
@@ -44,7 +44,6 @@ func (c *category) GetItemCountForLetter(letter byte) (itemAmount int, err error
 		}else if num > 96 && num < 122 {
 			//Passed letter is a lowercase letter
 			//Converting number to 1 - 26 matching alphabet. i.e 'c' = 3
-			fmt.Println(strconv.FormatInt(int64(len(c.alpha)), 10))
 			num = num - 96
 			return c.alpha[num].Items, nil
 		}else{
@@ -69,7 +68,6 @@ func GetCategory(ge_constant string) (c category, err error){
 	stringWriter := bytes.NewBufferString("http://services.runescape.com/m=itemdb_rs/api/catalogue/category.json?category=")
 	stringWriter.WriteString(ge_constant)
 
-	fmt.Println(stringWriter.String())
 	resp, err := http.Get(stringWriter.String())
 	defer resp.Body.Close()
 	if err != nil {
@@ -82,7 +80,6 @@ func GetCategory(ge_constant string) (c category, err error){
 
 	stringWriter.Reset()
 	stringWriter.Write(responseJson)
-	fmt.Println(stringWriter.String())
 
 	if err != nil {
 		fmt.Println("Go-Runescape: An error occoured when reading json from Runescape's API")

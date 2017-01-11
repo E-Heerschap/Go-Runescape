@@ -12,7 +12,7 @@ import (
 
 type trendPrice struct {
 	Trend string `json:"trend"`
-	Price int `json:"price"`
+	Price interface{} `json:"price"`
 }
 
 type items struct {
@@ -25,7 +25,7 @@ type items struct {
 	Description string `json:"description"`
 	Current trendPrice `json:"current"`
 	Today trendPrice `json:"today"`
-	Members bool `json:"members"`
+	Members string `json:"members"`
 }
 
 type itemsCatalogue struct {
