@@ -10,9 +10,9 @@ import (
 
 type rank struct {
 
-	name string `json:"name"`
-	score int `json:"score"`
-	rank int `json:"rank"`
+	Name string `json:"name"`
+	Score string `json:"score"`
+	Rank string `json:"rank"`
 
 }
 
@@ -27,7 +27,7 @@ func getRankings(skill int64, category int64, amountOfPlayers int64) (rankings [
 
 	resp, err := http.Get(stringWriter.String())
 
-	if resp != nil {
+	if err != nil {
 		return rankings, err
 	}
 
@@ -37,7 +37,7 @@ func getRankings(skill int64, category int64, amountOfPlayers int64) (rankings [
 		return rankings, err
 	}
 
-	err = json.Unmarshal(respBytes, rankings)
+	err = json.Unmarshal(respBytes, &rankings)
 
 	return rankings, err
 }
