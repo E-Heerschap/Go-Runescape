@@ -1,5 +1,7 @@
 # Go-Runescape Library
 
+[![Build Status](https://travis-ci.org/kingpulse/Go-Runescape.svg?branch=master)](https://travis-ci.org/kingpulse/Go-Runescape)
+
 ## Overview
 Go-Runescape is a *super* basic library for the Runescape API for Go.
 
