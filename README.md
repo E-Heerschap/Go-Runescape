@@ -1,6 +1,6 @@
 # Go-Runescape Library
 
-[![Build Status](https://travis-ci.org/kingpulse/Go-Runescape.svg?branch=master)](https://travis-ci.org/kingpulse/Go-Runescape)
+[![Build Status](https://travis-ci.org/kingpulse/Go-Runescape.svg?branch=master)](https://travis-ci.org/kingpulse/Go-Runescape) [![Maintainability](https://api.codeclimate.com/v1/badges/df6f8708f7170d5e2019/maintainability)](https://codeclimate.com/github/kingpulse/Go-Runescape/maintainability)
 
 ## Overview
 Go-Runescape is a library for the Runescape API for Go. The library supports:
