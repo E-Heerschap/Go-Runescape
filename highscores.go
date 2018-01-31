@@ -1,4 +1,4 @@
-package highscores
+package Go_Runescape
 
 import (
 	"net/url"
@@ -8,9 +8,12 @@ import (
 	"strconv"
 	"fmt"
 	"github.com/kingpulse/Go-Runescape"
+	"bytes"
+	"io/ioutil"
+	"encoding/json"
 )
 
-//This will store the highscores information of a player.
+//This will store the highscore_constants information of a player.
 type PlayerHighscores struct {
 
 	//Maps are being used so
@@ -59,4 +62,38 @@ func GetPlayerHighscores (playerName string, highscoreType string, httpClient Go
 
 
 	return rsph, nil
+}
+
+type rank struct {
+
+	Name string `json:"name"`
+	Score string `json:"score"`
+	Rank string `json:"rank"`
+
+}
+
+func GetRankings(skill int64, category int64, amountOfPlayers int64, HttpClient Go_Runescape.HttpClientWrap) (rankings []rank, err error)  {
+
+	stringWriter := bytes.NewBufferString("http://services.runescape.com/m=hiscore/ranking.json?table=")
+	stringWriter.WriteString(strconv.FormatInt(skill, 10))
+	stringWriter.WriteString("&category=")
+	stringWriter.WriteString(strconv.FormatInt(category, 10))
+	stringWriter.WriteString("&size=")
+	stringWriter.WriteString(strconv.FormatInt(amountOfPlayers, 10))
+
+	resp, err := HttpClient.Get(stringWriter.String())
+
+	if err != nil {
+		return rankings, err
+	}
+
+	respBytes, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		return rankings, err
+	}
+
+	err = json.Unmarshal(respBytes, &rankings)
+
+	return rankings, err
 }
