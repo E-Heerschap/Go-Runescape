@@ -3,7 +3,9 @@
 [![Build Status](https://travis-ci.org/kingpulse/Go-Runescape.svg?branch=master)](https://travis-ci.org/kingpulse/Go-Runescape)
 
 ## Overview
-Go-Runescape is a *super* basic library for the Runescape API for Go.
+Go-Runescape is a library for the Runescape API for Go. This project will no longer be updated because the initial goals for the project have been met.
+
+I apollogise if this does not meet the *effective go* standards. This was primarly built while I was initially learning go (: .
 
 ----
 
@@ -46,7 +48,7 @@ Go-Runescape/grand_exchange
 Go-Runescape/grand_exchange/ge_constants
 ```
 
-Getting details for an item requires the items id. These can be found [here](http://www.itemdb.biz/)
+Getting details for an item requires the items id. These can be found [here](http://www.itemdb.biz/).
 You can get details through a **ItemDetail** object by doing the following:
 ```
 //Getting a ItemDetail object
@@ -57,7 +59,7 @@ if err != nil {
 	return
 }
 //Displaying the description of a tuna.
-fmt.Println(tuna.Item.Description)
+fmt.Println(tuna.Description)
 ```
 If you want to look at which fields are in the **ItemDetail** object it can be found in:
 ```
