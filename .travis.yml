@@ -4,4 +4,5 @@ go:
   - 1.8.6
 env:
   - TEST_DIR=highscores
+  - TEST_DIR=grand_exchange
 script: cd $TEST_DIR && go test -v
