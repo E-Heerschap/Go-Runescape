@@ -8,16 +8,11 @@ import (
 	"encoding/json"
 )
 
-type ItemDetail struct {
-	Item item `json:"item"`
-	Current timeTrendPrice `json:"current"`
-	Today timeTrendPrice `json:"today"`
-	Day30 timeTrendPercentage `json:"day30"`
-	Day90 timeTrendPercentage `json:"day90"`
-	Day180 timeTrendPercentage `json:"day180"`
+type ItemJson struct {
+	Item ItemDetail `json:"item"`
 }
 
-type item struct {
+type ItemDetail struct {
 	Icon string `json:"icon"`
 	Icon_large string `json:"icon_large"`
 	Id int64 `json:"id"`
@@ -25,6 +20,11 @@ type item struct {
 	TypeIconURL string `json:"typeIcon"`
 	Name string `json:"name"`
 	Description string `json:"description"`
+	Current timeTrendPrice `json:"current"`
+	Today timeTrendPrice `json:"today"`
+	Day30 timeTrendPercentage `json:"day30"`
+	Day90 timeTrendPercentage `json:"day90"`
+	Day180 timeTrendPercentage `json:"day180"`
 }
 
 type timeTrendPrice struct {
@@ -37,7 +37,7 @@ type timeTrendPercentage struct {
 	Change string `json:"change"`
 }
 
-func GetItemDetail(itemID int64) (itemDetail ItemDetail, err error){
+func GetItemDetail(itemID int64) (ItemDetail, error){
 
 	//Creating URL for request.
 	stringWriter := bytes.NewBufferString("http://services.runescape.com/m=itemdb_rs/api/catalogue/detail.json?item=")
@@ -47,14 +47,20 @@ func GetItemDetail(itemID int64) (itemDetail ItemDetail, err error){
 	resp, err := http.Get(stringWriter.String())
 
 	if err != nil {
-		return itemDetail, err
+		return ItemDetail{}, err
 	}
 
 	respBytes, err := ioutil.ReadAll(resp.Body)
 
-	err = json.Unmarshal(respBytes, &itemDetail)
+	if err != nil {
+		return ItemDetail{}, err
+	}
 
-	return itemDetail, err
+	item := ItemJson{}
+
+	err = json.Unmarshal(respBytes, &item)
+
+	return item.Item, err
 }
 
 
