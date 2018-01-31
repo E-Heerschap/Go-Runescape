@@ -2,10 +2,7 @@ language: go
 go:
   - 1.9.3
   - 1.8.6
-env:
-  - TEST_DIR=highscores
-  - TEST_DIR=grand_exchange
-script: cd $TEST_DIR && go test -v -coverprofile=coverage.txt -covermode=atomic
+script: go test -v -coverprofile=coverage.txt -covermode=atomic
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

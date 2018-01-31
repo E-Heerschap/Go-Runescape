@@ -24,7 +24,7 @@ type PlayerHighscores struct {
 }
 
 //GetPlayerHighscores gets a PlayerHighscores object relating to the RS3 player from the name passed.
-func GetPlayerHighscores (playerName string, highscoreType string, httpClient Go_Runescape.HttpClientWrap) (rsph PlayerHighscores, err error) {
+func GetPlayerHighscores (playerName string, highscoreType string, httpClient Go_Runescape.IHttpClient) (rsph PlayerHighscores, err error) {
 
 	Url, _ := url.Parse("http://services.runescape.com/")
 
@@ -40,7 +40,6 @@ func GetPlayerHighscores (playerName string, highscoreType string, httpClient Go
 	}
 
 	scanner := bufio.NewScanner(resp.Body)
-
 
 	rsph.Levels = make([]int64, 0)
 	rsph.Ranks = make([]int64, 0)
@@ -60,7 +59,6 @@ func GetPlayerHighscores (playerName string, highscoreType string, httpClient Go
 
 	}
 
-
 	return rsph, nil
 }
 
@@ -72,7 +70,7 @@ type rank struct {
 
 }
 
-func GetRankings(skill int64, category int64, amountOfPlayers int64, HttpClient Go_Runescape.HttpClientWrap) (rankings []rank, err error)  {
+func GetRankings(skill int64, category int64, amountOfPlayers int64, HttpClient Go_Runescape.IHttpClient) (rankings []rank, err error)  {
 
 	stringWriter := bytes.NewBufferString("http://services.runescape.com/m=hiscore/ranking.json?table=")
 	stringWriter.WriteString(strconv.FormatInt(skill, 10))

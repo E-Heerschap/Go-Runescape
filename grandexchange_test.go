@@ -1,8 +1,8 @@
-package grand_exchange
+package Go_Runescape
 
 import(
 	"testing"
-	"github.com/kingpulse/Go-Runescape/grand_exchange/ge_constants"
+	"github.com/kingpulse/Go-Runescape/ge_constants"
 	"net/http"
 )
 

@@ -1,9 +1,9 @@
-	package highscores
+	package Go_Runescape
 
 	import (
 		"testing"
 		"strconv"
-		"github.com/kingpulse/Go-Runescape/highscores/highscore_constants"
+		"github.com/kingpulse/Go-Runescape/highscore_constants/highscore_constants"
 		"net/http"
 		"github.com/kingpulse/Go-Runescape"
 	)
@@ -52,7 +52,7 @@
 
 	func levelsCheck(t *testing.T, hs PlayerHighscores, playerType string){
 		if (hs.Levels == nil || hs.Ranks == nil || hs.XP == nil) {
-			t.Error("Failed to get " + playerType + " player highscores object.")
+			t.Error("Failed to get " + playerType + " player highscore_constants object.")
 		}
 
 		//Checking that levels are correct.

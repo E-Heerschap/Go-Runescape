@@ -55,7 +55,7 @@ func (c *category) GetItemCountForLetter(letter byte) (itemAmount int64, err err
 }
 
 //GetCategory returns a Category for the passed ge_constant.
-func GetCategory(ge_constant string, HttpClient Go_Runescape.HttpClientWrap) (c category, err error){
+func GetCategory(ge_constant string, HttpClient Go_Runescape.IHttpClient) (c category, err error){
 
 	cj := categoryJson{}
 
@@ -130,7 +130,7 @@ type timeTrendPercentage struct {
 	Change string `json:"change"`
 }
 
-func GetItemDetail(itemID int64, HttpClient Go_Runescape.HttpClientWrap) (ItemDetail, error){
+func GetItemDetail(itemID int64, HttpClient Go_Runescape.IHttpClient) (ItemDetail, error){
 
 	//Creating URL for request.
 	stringWriter := bytes.NewBufferString("http://services.runescape.com/m=itemdb_rs/api/catalogue/detail.json?item=")
@@ -180,7 +180,7 @@ type itemsCatalogue struct {
 }
 
 
-func GetItemsCatalogue(ge_constant string, letter byte, pageNo int, HttpClient Go_Runescape.HttpClientWrap) (c itemsCatalogue, err error){
+func GetItemsCatalogue(ge_constant string, letter byte, pageNo int, HttpClient Go_Runescape.IHttpClient) (c itemsCatalogue, err error){
 
 
 	//Ensuring passed letter is within valid bounds
