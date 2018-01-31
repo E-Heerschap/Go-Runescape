@@ -3,7 +3,16 @@
 [![Build Status](https://travis-ci.org/kingpulse/Go-Runescape.svg?branch=master)](https://travis-ci.org/kingpulse/Go-Runescape)
 
 ## Overview
-Go-Runescape is a library for the Runescape API for Go. This project will no longer be updated because the initial goals for the project have been met.
+Go-Runescape is a library for the Runescape API for Go. The library supports:
+
+- Getting player Levels
+- Getting a players Rank
+- Getting item details from the grandexchange (RS3 Only)
+- Getting items in categories from the grandexchange (RS3 Only)
+
+If you are after information regarding the old-school grandexchange, read the note at the end.
+
+This project will no longer be updated because the initial goals for the project have been met.
 
 I apollogise if this does not meet the *effective go* standards. This was primarly built while I was initially learning go (: .
 
@@ -121,5 +130,5 @@ fmt.Println(strconv.FormatInt(itemCount, 10))
 
 ### Note
 Keep in mind Jagex returns very minimal information unfourtunately so not much information is availible from their API.
-Currently this library does not have any support for the OSBuddy API. If you are looking for a GOOD grand exchange API to use their API provides much more information than Jagex's.
+Currently this library does not have any support for the OSBuddy API. If you are looking for a GOOD grand exchange API, use OSBuddy's. It provides much more information than Jagex's.
 
