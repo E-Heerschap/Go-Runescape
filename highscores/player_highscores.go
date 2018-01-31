@@ -7,6 +7,7 @@ import (
 	"bufio"
 	"strconv"
 	"fmt"
+	"github.com/kingpulse/Go-Runescape"
 )
 
 //This will store the highscores information of a player.
@@ -20,7 +21,7 @@ type PlayerHighscores struct {
 }
 
 //GetPlayerHighscores gets a PlayerHighscores object relating to the RS3 player from the name passed.
-func GetPlayerHighscores (playerName string, highscoreType string) (rsph PlayerHighscores) {
+func GetPlayerHighscores (playerName string, highscoreType string, httpClient Go_Runescape.HttpClientWrap) (rsph PlayerHighscores, err error) {
 
 	Url, _ := url.Parse("http://services.runescape.com/")
 
@@ -29,10 +30,10 @@ func GetPlayerHighscores (playerName string, highscoreType string) (rsph PlayerH
 	parameters.Add("player", playerName)
 	Url.RawQuery = parameters.Encode()
 
-	resp, err := http.Get(Url.String())
+	resp, err := httpClient.Get(Url.String())
 
 	if err != nil {
-		fmt.Println("Go-Runescape: Failed get request with url: " + Url.String())
+		return rsph, err
 	}
 
 	scanner := bufio.NewScanner(resp.Body)
@@ -57,5 +58,5 @@ func GetPlayerHighscores (playerName string, highscoreType string) (rsph PlayerH
 	}
 
 
-	return rsph
+	return rsph, nil
 }

@@ -8,6 +8,7 @@ import (
 	"errors"
 	"io/ioutil"
 	"strconv"
+	"github.com/kingpulse/Go-Runescape"
 )
 
 type category struct {
@@ -54,7 +55,7 @@ func (c *category) GetItemCountForLetter(letter byte) (itemAmount int64, err err
 }
 
 //GetCategory returns a Category for the passed ge_constant.
-func GetCategory(ge_constant string) (c category, err error){
+func GetCategory(ge_constant string, HttpClient Go_Runescape.HttpClientWrap) (c category, err error){
 
 	cj := categoryJson{}
 
@@ -68,7 +69,7 @@ func GetCategory(ge_constant string) (c category, err error){
 	stringWriter := bytes.NewBufferString("http://services.runescape.com/m=itemdb_rs/api/catalogue/category.json?category=")
 	stringWriter.WriteString(ge_constant)
 
-	resp, err := http.Get(stringWriter.String())
+	resp, err := HttpClient.Get(stringWriter.String())
 	defer resp.Body.Close()
 	if err != nil {
 		fmt.Println("Go-Runescape: An error occoured when sending get request.")

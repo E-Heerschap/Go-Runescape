@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"encoding/json"
 	"fmt"
+	"github.com/kingpulse/Go-Runescape"
 )
 
 type trendPrice struct {
@@ -34,7 +35,7 @@ type itemsCatalogue struct {
 }
 
 
-func GetItemsCatalogue(ge_constant string, letter byte, pageNo int) (c itemsCatalogue, err error){
+func GetItemsCatalogue(ge_constant string, letter byte, pageNo int, HttpClient Go_Runescape.HttpClientWrap) (c itemsCatalogue, err error){
 
 
 	//Ensuring passed letter is within valid bounds
@@ -55,7 +56,7 @@ func GetItemsCatalogue(ge_constant string, letter byte, pageNo int) (c itemsCata
 	stringWrite.WriteString("&page=")
 	stringWrite.WriteString(strconv.FormatInt(int64(pageNo), 10))
 
-	resp, err := http.Get(stringWrite.String())
+	resp, err := HttpClient.Get(stringWrite.String())
 
 	if err != nil {
 		return c, err;

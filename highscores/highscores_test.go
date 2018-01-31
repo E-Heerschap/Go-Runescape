@@ -1,56 +1,89 @@
-package highscores
+	package highscores
 
-import (
-	"testing"
-	"strconv"
-	"github.com/kingpulse/Go-Runescape/highscores/highscore_constants"
-)
+	import (
+		"testing"
+		"strconv"
+		"github.com/kingpulse/Go-Runescape/highscores/highscore_constants"
+		"net/http"
+		"github.com/kingpulse/Go-Runescape"
+	)
 
-//TestPlayerHighScores is some basic tests to check if the player information is being correctly downloaded.
-//(Primarily to test CI to be honest).
-//Player names that are passed in as parameters to the GetPlayerHighscores function are
-//#1 players as of 30/01/2018
-func TestPlayerHighScores(t *testing.T){
+	//TestPlayerHighScores is some basic tests to check if the player information is being correctly downloaded.
+	//(Primarily to test CI to be honest).
+	//Player names that are passed in as parameters to the GetPlayerHighscores function are
+	//#1 players as of 30/01/2018
+	func TestPlayerHighScores(t *testing.T){
 
-	/*
-	TESTING RS3 Player
-	 */
+		//Creating http client to use for requests
+		testClient := &http.Client{}
 
-	hs := GetPlayerHighscores("le me", highscore_constants.RS3PLAYER)
-	levelsCheck(t, hs, "RS3")
+		/*
+		TESTING RS3 Player
+		 */
 
+		hs, err := GetPlayerHighscores("le me", highscore_constants.RS3PLAYER, testClient)
+		levelsCheck(t, hs, "RS3")
 
-	/*
-	TESTING OSRS Player
-	 */
+		if err != nil {
+			t.Error("Failed to GetPlayerHighscores. Error: " + err.Error())
+		}
 
-	 hs = GetPlayerHighscores("Lynx Titan", highscore_constants.OSRSPLAYER)
-	levelsCheck(t, hs, "OSRS")
-}
+		/*
+		TESTING OSRS Player
+		 */
 
-func levelsCheck(t *testing.T, hs PlayerHighscores, playerType string){
-	if (hs.Levels == nil || hs.Ranks == nil || hs.XP == nil) {
-		t.Error("Failed to get " + playerType + " player highscores object.")
+		 hs, err = GetPlayerHighscores("Lynx Titan", highscore_constants.OSRSPLAYER, testClient)
+		levelsCheck(t, hs, "OSRS")
+
+		if err != nil {
+			t.Error("Failed to GetPlayerHighscores. Error: " + err.Error())
+		}
+
+		//Testing failure during GET()
+		failureGetClient := Go_Runescape.NotNilHttpClient{}
+
+		hs, err = GetPlayerHighscores("Lynx Titan", highscore_constants.OSRSPLAYER, failureGetClient)
+
+		if err == nil {
+			t.Error("GetPlayerHighscores failed to return errors from GET request.")
+		}
+
 	}
 
-	//Checking that levels are correct.
-	for _, val := range hs.Levels {
-		if val < 99 {
-			t.Error("Incorrect levels are being grabbed for " + playerType + " players.")
+	func levelsCheck(t *testing.T, hs PlayerHighscores, playerType string){
+		if (hs.Levels == nil || hs.Ranks == nil || hs.XP == nil) {
+			t.Error("Failed to get " + playerType + " player highscores object.")
+		}
+
+		//Checking that levels are correct.
+		for _, val := range hs.Levels {
+			if val < 99 {
+				t.Error("Incorrect levels are being grabbed for " + playerType + " players.")
+			}
 		}
 	}
-}
 
-func TestPlayerRanks(t *testing.T){
+	func TestPlayerRanks(t *testing.T){
 
-	strengthRankings, err := getRankings(highscore_constants.STRENGTH, 0, 5)
+		//Creating default http client to send requests.
+		testClient := &http.Client{}
 
-	if err != nil {
-		t.Error("Failed to get player rankings for strength.")
+		strengthRankings, err := GetRankings(highscore_constants.STRENGTH, 0, 5, testClient)
+
+		if err != nil {
+			t.Error("Failed to get player rankings for strength.")
+		}
+
+		if strengthRankings[0].Rank != strconv.Itoa(1) {
+			t.Error("Failed to get top player ranking in strength.")
+		}
+
+		failureClient := Go_Runescape.NotNilHttpClient{}
+
+		_, err = GetRankings(highscore_constants.STRENGTH, 0, 5, failureClient)
+
+		if err == nil {
+			t.Error("GetRankings failed to return errors from GET request.")
+		}
+
 	}
-
-	if strengthRankings[0].Rank != strconv.Itoa(1) {
-		t.Error("Failed to get top player ranking in strength.")
-	}
-
-}

@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"io/ioutil"
 	"encoding/json"
+	"github.com/kingpulse/Go-Runescape"
 )
 
 type ItemJson struct {
@@ -37,14 +38,14 @@ type timeTrendPercentage struct {
 	Change string `json:"change"`
 }
 
-func GetItemDetail(itemID int64) (ItemDetail, error){
+func GetItemDetail(itemID int64, HttpClient Go_Runescape.HttpClientWrap) (ItemDetail, error){
 
 	//Creating URL for request.
 	stringWriter := bytes.NewBufferString("http://services.runescape.com/m=itemdb_rs/api/catalogue/detail.json?item=")
 	itemIdString := strconv.FormatInt(itemID, 10)
 	stringWriter.WriteString(itemIdString)
 
-	resp, err := http.Get(stringWriter.String())
+	resp, err := HttpClient.Get(stringWriter.String())
 
 	if err != nil {
 		return ItemDetail{}, err

@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"io/ioutil"
 	"encoding/json"
+	"github.com/kingpulse/Go-Runescape"
 )
 
 type rank struct {
@@ -16,7 +17,7 @@ type rank struct {
 
 }
 
-func getRankings(skill int64, category int64, amountOfPlayers int64) (rankings []rank, err error)  {
+func GetRankings(skill int64, category int64, amountOfPlayers int64, HttpClient Go_Runescape.HttpClientWrap) (rankings []rank, err error)  {
 
 	stringWriter := bytes.NewBufferString("http://services.runescape.com/m=hiscore/ranking.json?table=")
 	stringWriter.WriteString(strconv.FormatInt(skill, 10))
@@ -25,7 +26,7 @@ func getRankings(skill int64, category int64, amountOfPlayers int64) (rankings [
 	stringWriter.WriteString("&size=")
 	stringWriter.WriteString(strconv.FormatInt(amountOfPlayers, 10))
 
-	resp, err := http.Get(stringWriter.String())
+	resp, err := HttpClient.Get(stringWriter.String())
 
 	if err != nil {
 		return rankings, err

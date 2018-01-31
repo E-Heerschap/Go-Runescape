@@ -3,6 +3,7 @@ package grand_exchange
 import(
 	"testing"
 	"github.com/kingpulse/Go-Runescape/grand_exchange/ge_constants"
+	"net/http"
 )
 
 //TestGetItemsCatalogue tests the GetItemsCatalogue function.
@@ -31,8 +32,10 @@ func TestGetItemsCatalogue(t *testing.T){
 //TestGetITemDetail tests the GetItemDetail function.
 func TestGetItemDetail(t *testing.T) {
 
+	testClient := &http.Client{}
+
 	//Getting Rune Scimitar item detail.
-	item, err := GetItemDetail(1333)
+	item, err := GetItemDetail(1333, testClient)
 
 	if err != nil {
 		t.Error("Failed to get item detail. Error: " + err.Error())
@@ -84,17 +87,20 @@ func checkTimeTrendPercentage(t *testing.T, ttp *timeTrendPercentage) {
 
 func TestGetCategory(t *testing.T) {
 
-	newCatergory, err := GetCategory(ge_constants.MELEE_WEAPONS_HIGH_LEVEL)
+	//Getting default http client.
+	testClient := &http.Client{}
+
+	newCategory, err := GetCategory(ge_constants.MELEE_WEAPONS_HIGH_LEVEL, testClient)
 
 	if err != nil {
 		t.Error("Failed to get category. Error: " + err.Error())
 	}
 
-	if newCatergory.alpha == nil {
+	if newCategory.alpha == nil {
 		t.Error("Failed to get category. alpha array is nil.")
 	}
 
-	categoryCount, err := newCatergory.GetItemCountForLetter('s')
+	categoryCount, err := newCategory.GetItemCountForLetter('s')
 
 	if err != nil {
 		t.Error("Failed to get item count from category. Error: " + err.Error())
@@ -104,7 +110,7 @@ func TestGetCategory(t *testing.T) {
 		t.Error("Failed to get correct item count from category.")
 	}
 
-	for _, categoryLetter := range newCatergory.alpha {
+	for _, categoryLetter := range newCategory.alpha {
 
 		if categoryLetter.Letter == "" {
 			t.Error("Failed to get correct category. Invalid category letter contained in alpha array.")
