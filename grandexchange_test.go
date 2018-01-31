@@ -9,7 +9,10 @@ import(
 //TestGetItemsCatalogue tests the GetItemsCatalogue function.
 func TestGetItemsCatalogue(t *testing.T){
 
-	ci, err := GetItemsCatalogue(ge_constants.POTIONS, 'p', 1)
+	//Creating working http client.
+	httpClient := &http.Client{}
+
+	ci, err := GetItemsCatalogue(ge_constants.POTIONS, 'p', 1, httpClient)
 
 	if err != nil {
 		t.Error("Failed to get items catalogue. Error: " + err.Error())
@@ -25,6 +28,15 @@ func TestGetItemsCatalogue(t *testing.T){
 
 	if len(ci.Items) <= 0 {
 		t.Error("Failed to get items catalogue. Items array has 0 length")
+	}
+
+	//Creating failure http client (will intentionally return an error)
+	failureClient := notNilHttpClient{}
+
+	_, err = GetItemsCatalogue(ge_constants.POTIONS, 'p', 1, failureClient)
+
+	if err == nil {
+		t.Error("GetItemsCatalogue failed to recognise errors from GET request.")
 	}
 
 }
@@ -57,6 +69,14 @@ func TestGetItemDetail(t *testing.T) {
 	checkTimeTrendPercentage(t, &item.Day30)
 	checkTimeTrendPercentage(t, &item.Day90)
 	checkTimeTrendPercentage(t, &item.Day180)
+
+	failureClient := notNilHttpClient{}
+
+	_, err = GetItemDetail(1333, failureClient)
+
+	if err == nil {
+		t.Error("GetItemDetail failed to recognize error from GET request.")
+	}
 }
 
 //checkTimeTrendPrice checks if string fields in timeTrendPrice objects are not equal to ""
@@ -121,4 +141,13 @@ func TestGetCategory(t *testing.T) {
 		}
 
 	}
+
+	failureClient := notNilHttpClient{}
+
+	_, err = GetCategory(ge_constants.MELEE_WEAPONS_HIGH_LEVEL, failureClient)
+
+	if err == nil {
+		t.Error("GetCategory failed to recognise errors from a GET request.")
+	}
+
 }
