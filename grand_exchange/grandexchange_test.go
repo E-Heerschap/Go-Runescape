@@ -3,7 +3,6 @@ package grand_exchange
 import(
 	"testing"
 	"github.com/kingpulse/Go-Runescape/grand_exchange/ge_constants"
-	"fmt"
 )
 
 //TestGetItemsCatalogue tests the GetItemsCatalogue function.
@@ -47,8 +46,6 @@ func TestGetItemDetail(t *testing.T) {
 		t.Error("Failed to get item detail. Item id is incorrect.")
 	}
 
-	fmt.Println("Current Trend: " + item.Current.Trend)
-
 	//Checking for valid TimeTrendPrice objects.
 	checkTimeTrendPrice(t, &item.Current)
 	checkTimeTrendPrice(t, &item.Today)
@@ -83,4 +80,39 @@ func checkTimeTrendPercentage(t *testing.T, ttp *timeTrendPercentage) {
 		t.Error("Invalid Change for timeTrendPercentage")
 	}
 
+}
+
+func TestGetCategory(t *testing.T) {
+
+	newCatergory, err := GetCategory(ge_constants.MELEE_WEAPONS_HIGH_LEVEL)
+
+	if err != nil {
+		t.Error("Failed to get category. Error: " + err.Error())
+	}
+
+	if newCatergory.alpha == nil {
+		t.Error("Failed to get category. alpha array is nil.")
+	}
+
+	categoryCount, err := newCatergory.GetItemCountForLetter('s')
+
+	if err != nil {
+		t.Error("Failed to get item count from category. Error: " + err.Error())
+	}
+
+	if categoryCount < 1 {
+		t.Error("Failed to get correct item count from category.")
+	}
+
+	for _, categoryLetter := range newCatergory.alpha {
+
+		if categoryLetter.Letter == "" {
+			t.Error("Failed to get correct category. Invalid category letter contained in alpha array.")
+		}
+
+		if categoryLetter.Items < 0 {
+			t.Error("Failed to get correct category. At least one category items is less than 0.")
+		}
+
+	}
 }
