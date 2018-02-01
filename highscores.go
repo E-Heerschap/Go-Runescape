@@ -1,5 +1,8 @@
 package Go_Runescape
 
+//Contains functions and structs to get information from the Runescape highscores api.
+//Author: Edwin Heerschap
+
 import (
 	"net/url"
 	"strings"
@@ -12,14 +15,30 @@ import (
 )
 
 //This will store the highscore_constants information of a player.
+//The skill indexes can be found in the highscore_constants package.
+//For example Levels[highscore_constants.MINING] would give the mining level of the player.
 type PlayerHighscores struct {
-	//Maps are being used so
+
 	Levels []int64
 	XP     []int64
 	Ranks  []int64
+
 }
 
-//GetPlayerHighscores gets a PlayerHighscores object relating to the RS3 player from the name passed.
+//GetPlayerHighscores gets a players highscores information. The highscoreType is the type of scoreboard to search.
+//Acceptable values are stored as constants in the highscore_constants package. These constants are:
+//
+//highscore_constants.RS3PLAYER
+//
+//highscore_constants.RS3IRONMAN
+//
+//highscore_constants.RS3HARDCOREIRONMAN
+//
+//highscore_constants.OSRSPLAYER
+//
+//highscore_constants.OSRSIRONMAN
+//
+//highscore_constants.OSRSULTIMATEIRONMAN
 func GetPlayerHighscores(playerName string, highscoreType string, httpClient IHttpClient) (rsph PlayerHighscores, err error) {
 
 	Url, _ := url.Parse("http://services.runescape.com/")
@@ -58,13 +77,16 @@ func GetPlayerHighscores(playerName string, highscoreType string, httpClient IHt
 	return rsph, nil
 }
 
-type rank struct {
+//Contains the list of ranked players on the highscores.
+type Rank struct {
 	Name  string `json:"name"`
 	Score string `json:"score"`
 	Rank  string `json:"rank"`
 }
 
-func GetRankings(skill int64, category int64, amountOfPlayers int64, HttpClient IHttpClient) (rankings []rank, err error) {
+//GetRankings gets the rankings for a passed skill. The user is advised to use the highscore_constants package to specify
+//the skill.
+func GetRankings(skill int64, category int64, amountOfPlayers int64, HttpClient IHttpClient) (rankings []Rank, err error) {
 
 	stringWriter := bytes.NewBufferString("http://services.runescape.com/m=hiscore/ranking.json?table=")
 	stringWriter.WriteString(strconv.FormatInt(skill, 10))

@@ -1,4 +1,8 @@
+//Contains constants useful as parameters to functions interacting with the grandexchange api. These are defined in
+//grandexchange.go.
 package ge_constants
+
+//Author: Edwin Heerschap
 
 const(
 	MISCELLANEOUS = "0"

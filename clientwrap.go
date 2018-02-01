@@ -1,5 +1,8 @@
 package Go_Runescape
 
+//Author: Edwin Heerschap
+//Defines interfaces, structs and methods used in the package.
+
 import (
 	"net/http"
 	"errors"
@@ -7,8 +10,9 @@ import (
 	"bytes"
 )
 
-//IHttpClient is made so the dev can use their own
-//method of performing the http request.
+//IHttpUtil is used for all major function calls in the package.
+//An implementing struct should define the Get() method to retrieve the data from the passed url and
+//store the information as a *http.Response. See the github repository for more information.
 type IHttpClient interface {
 	Get(url string) (*http.Response, error)
 }
@@ -17,20 +21,19 @@ type IHttpClient interface {
 	ALL Structs and methods from this point downwards are used for testing.
  */
 
-//NotNilHttpClient is used in the testing files to test for
-//not nil errors.
-type notNilHttpClient struct {
+//Is used for testing a failed get request.
+//The Get() function returns an error.
+type failGetHttpClient struct {
 	IHttpClient
 }
 
 //Get returns an error containing "TEST ERROR"
-func (nnhc notNilHttpClient) Get(url string) (*http.Response, error) {
+func (nnhc failGetHttpClient) Get(url string) (*http.Response, error) {
 	err := errors.New("TEST ERROR")
 	return &http.Response{}, err
 }
 
-//invalidJsonHttpClient is used to test the functions when obtaining
-//invalid json.
+//invalidJsonHttpClient is used to test the function responses to invalid json.
 type invalidJsonHttpClient struct {
 	IHttpClient
 }
@@ -41,7 +44,7 @@ type invalidJsonIOReader struct {
 	io.ReadCloser
 }
 
-//read returns invalid json in bytes. Infact its not json at all.
+//read returns invalid json in bytes. In fact, its not similar to json at all.
 func (iJson invalidJsonIOReader) read(b []byte) {
 
 	bs := bytes.NewBufferString("Invalid Json Bytes")
@@ -49,12 +52,13 @@ func (iJson invalidJsonIOReader) read(b []byte) {
 
 }
 
+//close is defined to satisfy the io.ReadCloser interface.
 func (iJson invalidJsonIOReader) close() {
 	//Doing absolutely nothing (:
 }
 
 //Get returns a *http.Response with invalid json and a nil error.
-//Used for testing functions that are trying to parse json.
+//Used for testing functions that are trying to parse json from a Get request.
 func (ijhc invalidJsonHttpClient) Get(url string) (*http.Response, error) {
 
 	invalidBody := invalidJsonIOReader{}

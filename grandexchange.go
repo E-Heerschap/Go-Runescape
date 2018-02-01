@@ -1,5 +1,8 @@
 package Go_Runescape
 
+//Author: Edwin Heerschap
+//Contains functions to get information from the runescape grandexchange api.
+
 import (
 	"bytes"
 	"encoding/json"
@@ -9,10 +12,13 @@ import (
 	"strconv"
 )
 
-type Category struct {
-	alpha []categoryLetterItem
-}
+//Category is an array containing information
+//on the category. The array is indexed by the alphabet including a hashtag.
+//Indexed as # = 0, a = 1, b = 2, c = 3 ...
+type Category []categoryLetterItem
 
+//categoryJson is the json object returned by Jagex when
+//requesting category information.
 type categoryJson struct {
 	Types []interface{}        `json:"types"`
 	Alpha []categoryLetterItem `json:"alpha"`
@@ -29,9 +35,12 @@ type categoryLetterItem struct {
 //GetItemCountForLetter returns the amount of items found in the Category starting
 //with a specific character.
 func (c *Category) GetItemCountForLetter(letter byte) (itemAmount int64, err error) {
+
+	//TODO convert # and alphabet to number conversations in seperate function.
+
 	if letter == '#' {
 
-		return c.alpha[0].Items, nil
+		return (*c)[0].Items, nil
 	} else {
 		num := int64(letter)
 
@@ -39,12 +48,12 @@ func (c *Category) GetItemCountForLetter(letter byte) (itemAmount int64, err err
 			//Passed letter is a capital letter.
 			//Converting number to 1 - 26 matching alphabet i.e 'c'= '3'
 			num = num - 63
-			return c.alpha[num].Items, nil
+			return (*c)[num].Items, nil
 		} else if num > 96 && num < 122 {
 			//Passed letter is a lowercase letter
 			//Converting number to 1 - 26 matching alphabet. i.e 'c' = 3
 			num = num - 96
-			return c.alpha[num].Items, nil
+			return (*c)[num].Items, nil
 		} else {
 			err = errors.New("number passed into getItemCountForLetter(letter byte) method is not a letter")
 			return -1, err
@@ -53,7 +62,7 @@ func (c *Category) GetItemCountForLetter(letter byte) (itemAmount int64, err err
 }
 
 //GetCategory returns a Category for the passed ge_constant.
-func GetCategory(geConstant string, HttpClient IHttpClient) (c Category, err error) {
+func GetCategory(geConstant string, HttpClient IHttpClient) (Category, error) {
 
 	cj := categoryJson{}
 
@@ -92,17 +101,16 @@ func GetCategory(geConstant string, HttpClient IHttpClient) (c Category, err err
 		return Category{}, err
 	}
 
-	c = Category{
-		alpha: cj.Alpha,
-	}
-
-	return c, err
+	return cj.Alpha, err
 }
 
+//ItemJson defines the json object
+//returned by jagex when requesting for item information.
 type ItemJson struct {
 	Item ItemDetail `json:"item"`
 }
 
+//ItemDetail contains information on a item.
 type ItemDetail struct {
 	Icon        string              `json:"icon"`
 	IconLarge   string              `json:"icon_large"`
@@ -118,16 +126,20 @@ type ItemDetail struct {
 	Day180      timeTrendPercentage `json:"day180"`
 }
 
+//Defines the trend of the price.
 type timeTrendPrice struct {
 	Trend string `json:"trend"`
 	Price string `json:"price"`
 }
 
+//Defined the trend of the price as a percentage.
 type timeTrendPercentage struct {
 	Trend  string `json:"trend"`
 	Change string `json:"change"`
 }
 
+//Gets grandexchage information from the passed item. If the passed item id is invalid
+//a json error will occur and be passed back.
 func GetItemDetail(itemID int64, HttpClient IHttpClient) (ItemDetail, error) {
 
 	//Creating URL for request.
@@ -154,11 +166,14 @@ func GetItemDetail(itemID int64, HttpClient IHttpClient) (ItemDetail, error) {
 	return item.Item, err
 }
 
+//Information on the current price trend.
 type TrendPrice struct {
 	Trend string      `json:"trend"`
 	Price interface{} `json:"price"`
 }
 
+
+//Information about item.
 type Items struct {
 	Icon        string     `json:"icon"`
 	IconLarge   string     `json:"icon_lrage"`
@@ -172,11 +187,15 @@ type Items struct {
 	Members     string     `json:"members"`
 }
 
+//Information on an grandexchange category.
 type ItemsCatalogue struct {
 	Items []Items `json:"items"`
 	Total int     `json:"total"`
 }
 
+//Gets information on the passed grandexchange category. It is advised that the user uses the ge_constants package to
+//choose a grandexchange category. Only items starting with the passed letter will be returned. pageNo is the page number
+//of the grandexchange catalogue to return for that category & letter.
 func GetItemsCatalogue(geConstant string, letter byte, pageNo int, HttpClient IHttpClient) (c ItemsCatalogue, err error) {
 
 	//Ensuring passed letter is within valid bounds

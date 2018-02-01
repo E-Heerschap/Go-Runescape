@@ -1,4 +1,8 @@
+//Contains constants useful as parameters to functions which interact with the highscores api. These are defined in
+//highscores.go.
 package highscore_constants
+
+//Author: Edwin Heerschap
 
 const (
 	TOTAL = 0

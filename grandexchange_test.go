@@ -31,7 +31,7 @@ func TestGetItemsCatalogue(t *testing.T) {
 	}
 
 	//Creating failure http client (will intentionally return an error)
-	failureClient := notNilHttpClient{}
+	failureClient := failGetHttpClient{}
 
 	_, err = GetItemsCatalogue(ge_constants.POTIONS, 'p', 1, failureClient)
 
@@ -78,7 +78,7 @@ func TestGetItemDetail(t *testing.T) {
 	checkTimeTrendPercentage(t, &item.Day90)
 	checkTimeTrendPercentage(t, &item.Day180)
 
-	failureClient := notNilHttpClient{}
+	failureClient := failGetHttpClient{}
 
 	_, err = GetItemDetail(1333, failureClient)
 
@@ -158,7 +158,7 @@ func TestGetCategory(t *testing.T) {
 
 	}
 
-	failureClient := notNilHttpClient{}
+	failureClient := failGetHttpClient{}
 
 	_, err = GetCategory(ge_constants.MELEE_WEAPONS_HIGH_LEVEL, failureClient)
 

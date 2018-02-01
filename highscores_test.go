@@ -39,7 +39,7 @@ func TestPlayerHighScores(t *testing.T) {
 	}
 
 	//Testing failure during GET()
-	failureGetClient := notNilHttpClient{}
+	failureGetClient := failGetHttpClient{}
 
 	_, err = GetPlayerHighscores("Lynx Titan", highscore_constants.OSRSPLAYER, failureGetClient)
 
@@ -85,7 +85,7 @@ func TestPlayerRanks(t *testing.T) {
 		t.Error("Failed to get top player ranking in strength.")
 	}
 
-	failureClient := notNilHttpClient{}
+	failureClient := failGetHttpClient{}
 
 	_, err = GetRankings(highscore_constants.STRENGTH, 0, 5, failureClient)
 
