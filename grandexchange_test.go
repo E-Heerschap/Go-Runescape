@@ -39,6 +39,14 @@ func TestGetItemsCatalogue(t *testing.T){
 		t.Error("GetItemsCatalogue failed to recognise errors from GET request.")
 	}
 
+	ijClient := invalidJsonHttpClient{}
+
+	_, err = GetItemsCatalogue(ge_constants.POTIONS, 'p', 1, ijClient)
+
+	if err == nil {
+		t.Error("GetItemsCatalogue failed to recognise invalid json.")
+	}
+
 }
 
 //TestGetITemDetail tests the GetItemDetail function.
@@ -76,6 +84,14 @@ func TestGetItemDetail(t *testing.T) {
 
 	if err == nil {
 		t.Error("GetItemDetail failed to recognize error from GET request.")
+	}
+
+	ijClient := invalidJsonHttpClient{}
+
+	_, err = GetItemDetail(1333, ijClient)
+
+	if err == nil {
+		t.Error("GetItemDetail failed to recognize invaid JSON")
 	}
 }
 
@@ -150,4 +166,12 @@ func TestGetCategory(t *testing.T) {
 		t.Error("GetCategory failed to recognise errors from a GET request.")
 	}
 
+
+	ijClient := invalidJsonHttpClient{}
+
+	_, err = GetCategory(ge_constants.MELEE_WEAPONS_HIGH_LEVEL, ijClient)
+
+	if err == nil {
+		t.Error("GetCategory failed to recognise errors from invalid json.")
+	}
 }

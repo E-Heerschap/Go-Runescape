@@ -3,9 +3,8 @@
 	import (
 		"testing"
 		"strconv"
-		"github.com/kingpulse/Go-Runescape/highscore_constants/highscore_constants"
+		"github.com/kingpulse/Go-Runescape/highscore_constants"
 		"net/http"
-		"github.com/kingpulse/Go-Runescape"
 	)
 
 	//TestPlayerHighScores is some basic tests to check if the player information is being correctly downloaded.
@@ -40,12 +39,20 @@
 		}
 
 		//Testing failure during GET()
-		failureGetClient := Go_Runescape.NotNilHttpClient{}
+		failureGetClient := notNilHttpClient{}
 
-		hs, err = GetPlayerHighscores("Lynx Titan", highscore_constants.OSRSPLAYER, failureGetClient)
+		_, err = GetPlayerHighscores("Lynx Titan", highscore_constants.OSRSPLAYER, failureGetClient)
 
 		if err == nil {
 			t.Error("GetPlayerHighscores failed to return errors from GET request.")
+		}
+
+		ijClient := invalidJsonHttpClient{}
+
+		_, err = GetPlayerHighscores("Lynx Titan", highscore_constants.OSRSPLAYER, ijClient)
+
+		if err == nil {
+			t.Error("GetPlayerHighscores failed to regonise error in json")
 		}
 
 	}
@@ -78,12 +85,20 @@
 			t.Error("Failed to get top player ranking in strength.")
 		}
 
-		failureClient := Go_Runescape.NotNilHttpClient{}
+		failureClient := notNilHttpClient{}
 
 		_, err = GetRankings(highscore_constants.STRENGTH, 0, 5, failureClient)
 
 		if err == nil {
 			t.Error("GetRankings failed to return errors from GET request.")
+		}
+
+		ijClient := invalidJsonHttpClient{}
+
+		_, err = GetRankings(highscore_constants.STRENGTH, 0, 5, ijClient)
+
+		if err == nil {
+			t.Error("GetRaknings failed to recognise json errors.")
 		}
 
 	}
