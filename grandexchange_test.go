@@ -132,7 +132,7 @@ func TestGetCategory(t *testing.T) {
 		t.Error("Failed to get Category. Error: " + err.Error())
 	}
 
-	if newCategory.alpha == nil {
+	if newCategory == nil {
 		t.Error("Failed to get Category. alpha array is nil.")
 	}
 
@@ -146,7 +146,7 @@ func TestGetCategory(t *testing.T) {
 		t.Error("Failed to get correct item count from Category.")
 	}
 
-	for _, categoryLetter := range newCategory.alpha {
+	for _, categoryLetter := range newCategory {
 
 		if categoryLetter.Letter == "" {
 			t.Error("Failed to get correct Category. Invalid Category letter contained in alpha array.")
