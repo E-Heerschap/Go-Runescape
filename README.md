@@ -40,7 +40,7 @@ Here is an example of the user using the default http.Client struct to send requ
 
 ```
 //Creating default http.Client
-defaultClient := &http.Client{}
+defaultClient := htttp.DefaultClient
 
 //Sending request for player highscores.
 hs, err := GetPlayerHighscores("le me", highscore_constants.RS3PLAYER, defaultClient)
