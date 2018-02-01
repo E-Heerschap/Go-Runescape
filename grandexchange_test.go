@@ -22,7 +22,7 @@ func TestGetItemsCatalogue(t *testing.T){
 		t.Error("Failed to get items catalogue. Items array is a nil pointer.")
 	}
 
-	if (ci.Total <= 0) {
+	if ci.Total <= 0 {
 		t.Error("Failed to get items catalogue. Total count is incorrect.")
 	}
 
@@ -129,31 +129,31 @@ func TestGetCategory(t *testing.T) {
 	newCategory, err := GetCategory(ge_constants.MELEE_WEAPONS_HIGH_LEVEL, testClient)
 
 	if err != nil {
-		t.Error("Failed to get category. Error: " + err.Error())
+		t.Error("Failed to get Category. Error: " + err.Error())
 	}
 
 	if newCategory.alpha == nil {
-		t.Error("Failed to get category. alpha array is nil.")
+		t.Error("Failed to get Category. alpha array is nil.")
 	}
 
 	categoryCount, err := newCategory.GetItemCountForLetter('s')
 
 	if err != nil {
-		t.Error("Failed to get item count from category. Error: " + err.Error())
+		t.Error("Failed to get item count from Category. Error: " + err.Error())
 	}
 
 	if categoryCount < 1 {
-		t.Error("Failed to get correct item count from category.")
+		t.Error("Failed to get correct item count from Category.")
 	}
 
 	for _, categoryLetter := range newCategory.alpha {
 
 		if categoryLetter.Letter == "" {
-			t.Error("Failed to get correct category. Invalid category letter contained in alpha array.")
+			t.Error("Failed to get correct Category. Invalid Category letter contained in alpha array.")
 		}
 
 		if categoryLetter.Items < 0 {
-			t.Error("Failed to get correct category. At least one category items is less than 0.")
+			t.Error("Failed to get correct Category. At least one Category items is less than 0.")
 		}
 
 	}

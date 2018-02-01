@@ -1,17 +1,15 @@
 package Go_Runescape
 
 import (
-	"net/http"
 	"bytes"
 	"encoding/json"
 	"fmt"
 	"errors"
 	"io/ioutil"
 	"strconv"
-	"github.com/kingpulse/Go-Runescape"
 )
 
-type category struct {
+type Category struct {
 	alpha []categoryLetterItem
 }
 
@@ -28,9 +26,9 @@ type categoryLetterItem struct {
 	Items int64 `json:"items"`
 }
 
-//GetItemCountForLetter returns the amount of items found in the category starting
+//GetItemCountForLetter returns the amount of items found in the Category starting
 //with a specific character.
-func (c *category) GetItemCountForLetter(letter byte) (itemAmount int64, err error){
+func (c *Category) GetItemCountForLetter(letter byte) (itemAmount int64, err error){
 
 	if letter == '#' {
 		return c.alpha[0].Items, nil
@@ -48,32 +46,32 @@ func (c *category) GetItemCountForLetter(letter byte) (itemAmount int64, err err
 			num = num - 96
 			return c.alpha[num].Items, nil
 		}else{
-			err = errors.New("Number passed into getItemCountForLetter(letter byte) method is not a letter.")
+			err = errors.New("number passed into getItemCountForLetter(letter byte) method is not a letter")
 			return -1, err
 		}
 	}
 }
 
 //GetCategory returns a Category for the passed ge_constant.
-func GetCategory(ge_constant string, HttpClient Go_Runescape.IHttpClient) (c category, err error){
+func GetCategory(geConstant string, HttpClient IHttpClient) (c Category, err error){
 
 	cj := categoryJson{}
 
-	num, err := strconv.ParseInt(ge_constant, 10, 64)
+	num, err := strconv.ParseInt(geConstant, 10, 64)
 	//Ensuring passed rune is valid
 	if (num < 0 && num > 37) || err != nil{
-		return category{}, errors.New("Go-Runescape: ge_constant passed into GetCategory(ge_constant string) must be between 1->37")
+		return Category{}, errors.New("Go-Runescape: ge_constant passed into GetCategory(ge_constant string) must be between 1->37")
 	}
 
 	//Appending string
-	stringWriter := bytes.NewBufferString("http://services.runescape.com/m=itemdb_rs/api/catalogue/category.json?category=")
-	stringWriter.WriteString(ge_constant)
+	stringWriter := bytes.NewBufferString("http://services.runescape.com/m=itemdb_rs/api/catalogue/Category.json?Category=")
+	stringWriter.WriteString(geConstant)
 
 	resp, err := HttpClient.Get(stringWriter.String())
 	defer resp.Body.Close()
 	if err != nil {
 		fmt.Println("Go-Runescape: An error occoured when sending get request.")
-		return category{}, err
+		return Category{}, err
 	}
 
 	//Reading bytes
@@ -84,17 +82,17 @@ func GetCategory(ge_constant string, HttpClient Go_Runescape.IHttpClient) (c cat
 
 	if err != nil {
 		fmt.Println("Go-Runescape: An error occoured when reading json from Runescape's API")
-		return category{}, err
+		return Category{}, err
 	}
 
 	err = json.Unmarshal(responseJson, &cj)
 
 	if err != nil {
 		fmt.Println("Go-Runescape: An error occoured when parsing json from Runescape's API")
-		return category{}, err
+		return Category{}, err
 	}
 
-	c = category{
+	c = Category{
 		alpha: cj.Alpha,
 	}
 
@@ -106,18 +104,18 @@ type ItemJson struct {
 }
 
 type ItemDetail struct {
-	Icon string `json:"icon"`
-	Icon_large string `json:"icon_large"`
-	Id int64 `json:"id"`
-	ItemType string `json:"type"`
-	TypeIconURL string `json:"typeIcon"`
-	Name string `json:"name"`
-	Description string `json:"description"`
-	Current timeTrendPrice `json:"current"`
-	Today timeTrendPrice `json:"today"`
-	Day30 timeTrendPercentage `json:"day30"`
-	Day90 timeTrendPercentage `json:"day90"`
-	Day180 timeTrendPercentage `json:"day180"`
+	Icon        string              `json:"icon"`
+	IconLarge   string              `json:"icon_large"`
+	Id          int64               `json:"id"`
+	ItemType    string              `json:"type"`
+	TypeIconURL string              `json:"typeIcon"`
+	Name        string              `json:"name"`
+	Description string              `json:"description"`
+	Current     timeTrendPrice      `json:"current"`
+	Today       timeTrendPrice      `json:"today"`
+	Day30       timeTrendPercentage `json:"day30"`
+	Day90       timeTrendPercentage `json:"day90"`
+	Day180      timeTrendPercentage `json:"day180"`
 }
 
 type timeTrendPrice struct {
@@ -130,7 +128,7 @@ type timeTrendPercentage struct {
 	Change string `json:"change"`
 }
 
-func GetItemDetail(itemID int64, HttpClient Go_Runescape.IHttpClient) (ItemDetail, error){
+func GetItemDetail(itemID int64, HttpClient IHttpClient) (ItemDetail, error){
 
 	//Creating URL for request.
 	stringWriter := bytes.NewBufferString("http://services.runescape.com/m=itemdb_rs/api/catalogue/detail.json?item=")
@@ -156,31 +154,31 @@ func GetItemDetail(itemID int64, HttpClient Go_Runescape.IHttpClient) (ItemDetai
 	return item.Item, err
 }
 
-type trendPrice struct {
+type TrendPrice struct {
 	Trend string `json:"trend"`
 	Price interface{} `json:"price"`
 }
 
-type items struct {
-	Icon string `json:"icon"`
-	Icon_large string `json:"icon_lrage"`
-	Id int `json:"id"`
-	Type string `json:"type"`
-	TypeIcon string `json:"typeIcon"`
-	Name string `json:"name"`
-	Description string `json:"description"`
-	Current trendPrice `json:"current"`
-	Today trendPrice `json:"today"`
-	Members string `json:"members"`
+type Items struct {
+	Icon        string     `json:"icon"`
+	IconLarge   string     `json:"icon_lrage"`
+	Id          int        `json:"id"`
+	Type        string     `json:"type"`
+	TypeIcon    string     `json:"typeIcon"`
+	Name        string     `json:"name"`
+	Description string     `json:"description"`
+	Current     TrendPrice `json:"current"`
+	Today       TrendPrice `json:"today"`
+	Members     string     `json:"members"`
 }
 
-type itemsCatalogue struct {
-	Items []items `json:"items"`
+type ItemsCatalogue struct {
+	Items []Items `json:"items"`
 	Total int `json:"total"`
 }
 
 
-func GetItemsCatalogue(ge_constant string, letter byte, pageNo int, HttpClient Go_Runescape.IHttpClient) (c itemsCatalogue, err error){
+func GetItemsCatalogue(geConstant string, letter byte, pageNo int, HttpClient IHttpClient) (c ItemsCatalogue, err error){
 
 
 	//Ensuring passed letter is within valid bounds
@@ -194,8 +192,8 @@ func GetItemsCatalogue(ge_constant string, letter byte, pageNo int, HttpClient G
 	}
 
 	//Creating url string
-	stringWrite := bytes.NewBufferString("http://services.runescape.com/m=itemdb_rs/api/catalogue/items.json?category=")
-	stringWrite.WriteString(ge_constant)
+	stringWrite := bytes.NewBufferString("http://services.runescape.com/m=itemdb_rs/api/catalogue/items.json?Category=")
+	stringWrite.WriteString(geConstant)
 	stringWrite.WriteString("&alpha=")
 	stringWrite.WriteByte(letter)
 	stringWrite.WriteString("&page=")
@@ -204,7 +202,7 @@ func GetItemsCatalogue(ge_constant string, letter byte, pageNo int, HttpClient G
 	resp, err := HttpClient.Get(stringWrite.String())
 
 	if err != nil {
-		return c, err;
+		return c, err
 	}
 
 	respBytes, err := ioutil.ReadAll(resp.Body)

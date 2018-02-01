@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"errors"
 	"io"
-	"strings"
 	"bytes"
 )
 

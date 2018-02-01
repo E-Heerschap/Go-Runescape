@@ -2,12 +2,10 @@ package Go_Runescape
 
 import (
 	"net/url"
-	"net/http"
 	"strings"
 	"bufio"
 	"strconv"
-	"fmt"
-	"github.com/kingpulse/Go-Runescape"
+
 	"bytes"
 	"io/ioutil"
 	"encoding/json"
@@ -24,7 +22,7 @@ type PlayerHighscores struct {
 }
 
 //GetPlayerHighscores gets a PlayerHighscores object relating to the RS3 player from the name passed.
-func GetPlayerHighscores (playerName string, highscoreType string, httpClient Go_Runescape.IHttpClient) (rsph PlayerHighscores, err error) {
+func GetPlayerHighscores (playerName string, highscoreType string, httpClient IHttpClient) (rsph PlayerHighscores, err error) {
 
 	Url, _ := url.Parse("http://services.runescape.com/")
 
@@ -70,11 +68,11 @@ type rank struct {
 
 }
 
-func GetRankings(skill int64, category int64, amountOfPlayers int64, HttpClient Go_Runescape.IHttpClient) (rankings []rank, err error)  {
+func GetRankings(skill int64, category int64, amountOfPlayers int64, HttpClient IHttpClient) (rankings []rank, err error)  {
 
 	stringWriter := bytes.NewBufferString("http://services.runescape.com/m=hiscore/ranking.json?table=")
 	stringWriter.WriteString(strconv.FormatInt(skill, 10))
-	stringWriter.WriteString("&category=")
+	stringWriter.WriteString("&Category=")
 	stringWriter.WriteString(strconv.FormatInt(category, 10))
 	stringWriter.WriteString("&size=")
 	stringWriter.WriteString(strconv.FormatInt(amountOfPlayers, 10))

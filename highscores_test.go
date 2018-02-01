@@ -58,7 +58,7 @@
 	}
 
 	func levelsCheck(t *testing.T, hs PlayerHighscores, playerType string){
-		if (hs.Levels == nil || hs.Ranks == nil || hs.XP == nil) {
+		if hs.Levels == nil || hs.Ranks == nil || hs.XP == nil {
 			t.Error("Failed to get " + playerType + " player highscore_constants object.")
 		}
 
