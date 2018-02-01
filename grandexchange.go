@@ -14,7 +14,7 @@ type Category struct {
 }
 
 type categoryJson struct {
-	Types []interface{} `json:"types"`
+	Types []interface{}        `json:"types"`
 	Alpha []categoryLetterItem `json:"alpha"`
 }
 
@@ -23,16 +23,16 @@ type categoryJson struct {
 //Example: {"letter":"#","items":0}
 type categoryLetterItem struct {
 	Letter string `json:"letter"`
-	Items int64 `json:"items"`
+	Items  int64  `json:"items"`
 }
 
 //GetItemCountForLetter returns the amount of items found in the Category starting
 //with a specific character.
-func (c *Category) GetItemCountForLetter(letter byte) (itemAmount int64, err error){
-
+func (c *Category) GetItemCountForLetter(letter byte) (itemAmount int64, err error) {
 	if letter == '#' {
+
 		return c.alpha[0].Items, nil
-	}else{
+	} else {
 		num := int64(letter)
 
 		if num > 64 && num < 91 {
@@ -40,12 +40,12 @@ func (c *Category) GetItemCountForLetter(letter byte) (itemAmount int64, err err
 			//Converting number to 1 - 26 matching alphabet i.e 'c'= '3'
 			num = num - 63
 			return c.alpha[num].Items, nil
-		}else if num > 96 && num < 122 {
+		} else if num > 96 && num < 122 {
 			//Passed letter is a lowercase letter
 			//Converting number to 1 - 26 matching alphabet. i.e 'c' = 3
 			num = num - 96
 			return c.alpha[num].Items, nil
-		}else{
+		} else {
 			err = errors.New("number passed into getItemCountForLetter(letter byte) method is not a letter")
 			return -1, err
 		}
@@ -53,13 +53,13 @@ func (c *Category) GetItemCountForLetter(letter byte) (itemAmount int64, err err
 }
 
 //GetCategory returns a Category for the passed ge_constant.
-func GetCategory(geConstant string, HttpClient IHttpClient) (c Category, err error){
+func GetCategory(geConstant string, HttpClient IHttpClient) (c Category, err error) {
 
 	cj := categoryJson{}
 
 	num, err := strconv.ParseInt(geConstant, 10, 64)
 	//Ensuring passed rune is valid
-	if (num < 0 && num > 37) || err != nil{
+	if (num < 0 && num > 37) || err != nil {
 		return Category{}, errors.New("Go-Runescape: ge_constant passed into GetCategory(ge_constant string) must be between 1->37")
 	}
 
@@ -124,11 +124,11 @@ type timeTrendPrice struct {
 }
 
 type timeTrendPercentage struct {
-	Trend string `json:"trend"`
+	Trend  string `json:"trend"`
 	Change string `json:"change"`
 }
 
-func GetItemDetail(itemID int64, HttpClient IHttpClient) (ItemDetail, error){
+func GetItemDetail(itemID int64, HttpClient IHttpClient) (ItemDetail, error) {
 
 	//Creating URL for request.
 	stringWriter := bytes.NewBufferString("http://services.runescape.com/m=itemdb_rs/api/catalogue/detail.json?item=")
@@ -155,7 +155,7 @@ func GetItemDetail(itemID int64, HttpClient IHttpClient) (ItemDetail, error){
 }
 
 type TrendPrice struct {
-	Trend string `json:"trend"`
+	Trend string      `json:"trend"`
 	Price interface{} `json:"price"`
 }
 
@@ -174,19 +174,17 @@ type Items struct {
 
 type ItemsCatalogue struct {
 	Items []Items `json:"items"`
-	Total int `json:"total"`
+	Total int     `json:"total"`
 }
 
-
-func GetItemsCatalogue(geConstant string, letter byte, pageNo int, HttpClient IHttpClient) (c ItemsCatalogue, err error){
-
+func GetItemsCatalogue(geConstant string, letter byte, pageNo int, HttpClient IHttpClient) (c ItemsCatalogue, err error) {
 
 	//Ensuring passed letter is within valid bounds
 	num := int64(letter)
 
 	if num > 64 && num < 91 {
 		num = num + 32
-	}else if num < 97 || num > 122 {
+	} else if num < 97 || num > 122 {
 		return c, errors.New("Go-Runescape: GetItemsCatalogue(ge_constant string, letter byte, pageNo int), " +
 			"parameter must be between A->Z (not case-sensitive).")
 	}

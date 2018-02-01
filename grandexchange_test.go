@@ -1,13 +1,13 @@
 package Go_Runescape
 
-import(
+import (
 	"testing"
 	"github.com/kingpulse/Go-Runescape/ge_constants"
 	"net/http"
 )
 
 //TestGetItemsCatalogue tests the GetItemsCatalogue function.
-func TestGetItemsCatalogue(t *testing.T){
+func TestGetItemsCatalogue(t *testing.T) {
 
 	//Creating working http client.
 	httpClient := &http.Client{}
@@ -165,7 +165,6 @@ func TestGetCategory(t *testing.T) {
 	if err == nil {
 		t.Error("GetCategory failed to recognise errors from a GET request.")
 	}
-
 
 	ijClient := invalidJsonHttpClient{}
 

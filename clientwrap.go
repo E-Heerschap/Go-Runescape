@@ -24,7 +24,7 @@ type notNilHttpClient struct {
 }
 
 //Get returns an error containing "TEST ERROR"
-func (nnhc notNilHttpClient) Get(url string) (*http.Response, error){
+func (nnhc notNilHttpClient) Get(url string) (*http.Response, error) {
 	err := errors.New("TEST ERROR")
 	return &http.Response{}, err
 }
@@ -48,7 +48,6 @@ func (iJson invalidJsonIOReader) read(b []byte) {
 	bs.Read(b)
 
 }
-
 
 func (iJson invalidJsonIOReader) close() {
 	//Doing absolutely nothing (:

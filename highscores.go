@@ -13,16 +13,14 @@ import (
 
 //This will store the highscore_constants information of a player.
 type PlayerHighscores struct {
-
 	//Maps are being used so
 	Levels []int64
-	XP []int64
-	Ranks []int64
-
+	XP     []int64
+	Ranks  []int64
 }
 
 //GetPlayerHighscores gets a PlayerHighscores object relating to the RS3 player from the name passed.
-func GetPlayerHighscores (playerName string, highscoreType string, httpClient IHttpClient) (rsph PlayerHighscores, err error) {
+func GetPlayerHighscores(playerName string, highscoreType string, httpClient IHttpClient) (rsph PlayerHighscores, err error) {
 
 	Url, _ := url.Parse("http://services.runescape.com/")
 
@@ -61,14 +59,12 @@ func GetPlayerHighscores (playerName string, highscoreType string, httpClient IH
 }
 
 type rank struct {
-
-	Name string `json:"name"`
+	Name  string `json:"name"`
 	Score string `json:"score"`
-	Rank string `json:"rank"`
-
+	Rank  string `json:"rank"`
 }
 
-func GetRankings(skill int64, category int64, amountOfPlayers int64, HttpClient IHttpClient) (rankings []rank, err error)  {
+func GetRankings(skill int64, category int64, amountOfPlayers int64, HttpClient IHttpClient) (rankings []rank, err error) {
 
 	stringWriter := bytes.NewBufferString("http://services.runescape.com/m=hiscore/ranking.json?table=")
 	stringWriter.WriteString(strconv.FormatInt(skill, 10))
