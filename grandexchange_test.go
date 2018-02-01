@@ -10,7 +10,7 @@ import (
 func TestGetItemsCatalogue(t *testing.T) {
 
 	//Creating working http client.
-	httpClient := &http.Client{}
+	httpClient := http.DefaultClient
 
 	ci, err := GetItemsCatalogue(ge_constants.POTIONS, 'p', 1, httpClient)
 
@@ -52,7 +52,7 @@ func TestGetItemsCatalogue(t *testing.T) {
 //TestGetITemDetail tests the GetItemDetail function.
 func TestGetItemDetail(t *testing.T) {
 
-	testClient := &http.Client{}
+	testClient := http.DefaultClient
 
 	//Getting Rune Scimitar item detail.
 	item, err := GetItemDetail(1333, testClient)
@@ -124,7 +124,7 @@ func checkTimeTrendPercentage(t *testing.T, ttp *timeTrendPercentage) {
 func TestGetCategory(t *testing.T) {
 
 	//Getting default http client.
-	testClient := &http.Client{}
+	testClient := http.DefaultClient
 
 	newCategory, err := GetCategory(ge_constants.MELEE_WEAPONS_HIGH_LEVEL, testClient)
 

@@ -14,7 +14,7 @@ import (
 func TestPlayerHighScores(t *testing.T) {
 
 	//Creating http client to use for requests
-	testClient := &http.Client{}
+	testClient := http.DefaultClient
 
 	/*
 	TESTING RS3 Player
@@ -73,7 +73,7 @@ func levelsCheck(t *testing.T, hs PlayerHighscores, playerType string) {
 func TestPlayerRanks(t *testing.T) {
 
 	//Creating default http client to send requests.
-	testClient := &http.Client{}
+	testClient := http.DefaultClient
 
 	strengthRankings, err := GetRankings(highscore_constants.STRENGTH, 0, 5, testClient)
 
