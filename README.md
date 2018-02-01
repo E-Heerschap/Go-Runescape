@@ -1,6 +1,6 @@
 # Go-Runescape Library
 
-[![Build Status](https://travis-ci.org/kingpulse/Go-Runescape.svg?branch=master)](https://travis-ci.org/kingpulse/Go-Runescape) [![Maintainability](https://api.codeclimate.com/v1/badges/df6f8708f7170d5e2019/maintainability)](https://codeclimate.com/github/kingpulse/Go-Runescape/maintainability) [![codecov](https://codecov.io/gh/kingpulse/Go-Runescape/branch/master/graph/badge.svg)](https://codecov.io/gh/kingpulse/Go-Runescape)
+[![Build Status](https://travis-ci.org/kingpulse/Go-Runescape.svg?branch=master)](https://travis-ci.org/kingpulse/Go-Runescape) [![Maintainability](https://api.codeclimate.com/v1/badges/df6f8708f7170d5e2019/maintainability)](https://codeclimate.com/github/kingpulse/Go-Runescape/maintainability) [codecov](https://codecov.io/gh/kingpulse/Go-Runescape/branch/master/graph/badge.svg)](https://codecov.io/gh/kingpulse/Go-Runescape)TODO Add GODOC Badge
 
 ## Overview
 Go-Runescape is a library for the Runescape API for Go. The library supports:
@@ -146,4 +146,3 @@ fmt.Println(strconv.FormatInt(itemCount, 10))
 ### Note
 Keep in mind Jagex returns very minimal information unfourtunately so not much information is availible from their API.
 Currently this library does not have any support for the OSBuddy API. If you are looking for a GOOD grand exchange API, use OSBuddy's. It provides much more information than Jagex's.
-
