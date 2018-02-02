@@ -73,15 +73,16 @@ func GetCategory(geConstant string, HttpClient IHttpClient) (Category, error) {
 	}
 
 	//Appending string
-	stringWriter := bytes.NewBufferString("http://services.runescape.com/m=itemdb_rs/api/catalogue/Category.json?Category=")
+	stringWriter := bytes.NewBufferString("http://services.runescape.com/m=itemdb_rs/api/catalogue/category.json?category=")
 	stringWriter.WriteString(geConstant)
 
 	resp, err := HttpClient.Get(stringWriter.String())
-	defer resp.Body.Close()
+
 	if err != nil {
-		fmt.Println("Go-Runescape: An error occoured when sending get request.")
 		return Category{}, err
 	}
+
+	defer resp.Body.Close()
 
 	//Reading bytes
 	responseJson, err := ioutil.ReadAll(resp.Body)
@@ -90,7 +91,6 @@ func GetCategory(geConstant string, HttpClient IHttpClient) (Category, error) {
 	stringWriter.Write(responseJson)
 
 	if err != nil {
-		fmt.Println("Go-Runescape: An error occoured when reading json from Runescape's API")
 		return Category{}, err
 	}
 
@@ -209,7 +209,7 @@ func GetItemsCatalogue(geConstant string, letter byte, pageNo int, HttpClient IH
 	}
 
 	//Creating url string
-	stringWrite := bytes.NewBufferString("http://services.runescape.com/m=itemdb_rs/api/catalogue/items.json?Category=")
+	stringWrite := bytes.NewBufferString("http://services.runescape.com/m=itemdb_rs/api/catalogue/items.json?category=")
 	stringWrite.WriteString(geConstant)
 	stringWrite.WriteString("&alpha=")
 	stringWrite.WriteByte(letter)
@@ -217,6 +217,14 @@ func GetItemsCatalogue(geConstant string, letter byte, pageNo int, HttpClient IH
 	stringWrite.WriteString(strconv.FormatInt(int64(pageNo), 10))
 
 	resp, err := HttpClient.Get(stringWrite.String())
+
+	if resp == nil {
+		fmt.Println("nil")
+	}
+
+	if resp.Body == nil {
+		fmt.Println("body nil")
+	}
 
 	if err != nil {
 		return c, err

@@ -120,8 +120,8 @@ fmt.Println(catelogue.Items[0].Today.Price.(string))
 
 ## Get number of items in category for letter
 
-```
 Lets jump right into the example:
+
 ```
 //Getting category information for high level melee armor
 category, err := grand_exchange.GetCategory(ge_constants.MELEE_ARMOUR_HIGH_LEVEL, HttpClient)

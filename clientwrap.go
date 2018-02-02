@@ -8,7 +8,7 @@ import (
 	"errors"
 	"io"
 	"bytes"
-)
+	)
 
 //IHttpUtil is used for all major function calls in the package.
 //An implementing struct should define the Get() method to retrieve the data from the passed url and
@@ -45,26 +45,27 @@ type invalidJsonIOReader struct {
 }
 
 //read returns invalid json in bytes. In fact, its not similar to json at all.
-func (iJson invalidJsonIOReader) read(b []byte) {
+func (iJson invalidJsonIOReader) Read(b []byte) (int, error){
 
 	bs := bytes.NewBufferString("Invalid Json Bytes")
 	bs.Read(b)
 
+	return bs.Len(), io.EOF
 }
 
 //close is defined to satisfy the io.ReadCloser interface.
-func (iJson invalidJsonIOReader) close() {
+func (iJson invalidJsonIOReader) Close() error{
 	//Doing absolutely nothing (:
+	return nil
 }
 
 //Get returns a *http.Response with invalid json and a nil error.
 //Used for testing functions that are trying to parse json from a Get request.
 func (ijhc invalidJsonHttpClient) Get(url string) (*http.Response, error) {
 
-	invalidBody := invalidJsonIOReader{}
+	resp := http.Response{}
+	ij := invalidJsonIOReader{}
+	resp.Body = ij
 
-	resp := &http.Response{}
-	resp.Body = invalidBody
-
-	return resp, nil
+	return &resp, nil
 }
