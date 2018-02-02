@@ -30,6 +30,12 @@ func TestGetItemsCatalogue(t *testing.T) {
 		t.Error("Failed to get items catalogue. Items array has 0 length")
 	}
 
+	_, err = GetItemsCatalogue("200", 'p', 1, httpClient)
+
+	if err == nil {
+		t.Error("Failed to detect out of range geConstant for GetItemsCatalogue.")
+	}
+
 	//Creating failure http client (will intentionally return an error)
 	failureClient := failGetHttpClient{}
 
@@ -146,6 +152,24 @@ func TestGetCategory(t *testing.T) {
 		t.Error("Failed to get correct item count from Category.")
 	}
 
+	categoryCount, err = newCategory.GetItemCountForLetter('S')
+
+	if err != nil {
+		t.Error("Failed to get item count from Category. Error: " + err.Error())
+	}
+
+	if categoryCount < 1 {
+		t.Error("Failed to get correct item count from Category.")
+	}
+
+	_, err = newCategory.GetItemCountForLetter('#')
+
+	if err != nil {
+		t.Error("Failed to get item count from Category. Error: " + err.Error())
+	}
+
+	_, err = newCategory.GetItemCountForLetter('(')
+
 	for _, categoryLetter := range newCategory {
 
 		if categoryLetter.Letter == "" {
@@ -156,6 +180,18 @@ func TestGetCategory(t *testing.T) {
 			t.Error("Failed to get correct Category. At least one Category items is less than 0.")
 		}
 
+	}
+
+	_, err = GetCategory("jk", testClient)
+
+	if err == nil {
+		t.Error("Failed to check validity of category constant. Used letters instead of numbers")
+	}
+
+	_, err = GetCategory("99", testClient)
+
+	if err == nil {
+		t.Error("Failed to check validity of category constant. Number is out of range.")
 	}
 
 	failureClient := failGetHttpClient{}

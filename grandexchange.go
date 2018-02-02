@@ -6,7 +6,6 @@ package Go_Runescape
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"errors"
 	"io/ioutil"
 	"strconv"
@@ -97,7 +96,6 @@ func GetCategory(geConstant string, HttpClient IHttpClient) (Category, error) {
 	err = json.Unmarshal(responseJson, &cj)
 
 	if err != nil {
-		fmt.Println("Go-Runescape: An error occoured when parsing json from Runescape's API")
 		return Category{}, err
 	}
 
@@ -218,14 +216,6 @@ func GetItemsCatalogue(geConstant string, letter byte, pageNo int, HttpClient IH
 
 	resp, err := HttpClient.Get(stringWrite.String())
 
-	if resp == nil {
-		fmt.Println("nil")
-	}
-
-	if resp.Body == nil {
-		fmt.Println("body nil")
-	}
-
 	if err != nil {
 		return c, err
 	}
@@ -235,7 +225,6 @@ func GetItemsCatalogue(geConstant string, letter byte, pageNo int, HttpClient IH
 	err = json.Unmarshal(respBytes, &c)
 
 	if err != nil {
-		fmt.Println("Go-Runescape: Failed to unmarshal JSON while getting item catalouge.")
 		return c, err
 	}
 
