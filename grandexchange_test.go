@@ -30,7 +30,7 @@ func TestGetItemsCatalogue(t *testing.T) {
 		t.Error("Failed to get items catalogue. Items array has 0 length")
 	}
 
-	_, err = GetItemsCatalogue("200", 'p', 1, httpClient)
+	_, err = GetItemsCatalogue(ge_constants.POTIONS, ')', 1, httpClient)
 
 	if err == nil {
 		t.Error("Failed to detect out of range geConstant for GetItemsCatalogue.")
