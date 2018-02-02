@@ -47,14 +47,6 @@ func TestPlayerHighScores(t *testing.T) {
 		t.Error("GetPlayerHighscores failed to return errors from GET request.")
 	}
 
-	ijClient := invalidJsonHttpClient{}
-
-	_, err = GetPlayerHighscores("Lynx Titan", highscore_constants.OSRSPLAYER, ijClient)
-
-	if err == nil {
-		t.Error("GetPlayerHighscores failed to regonise error in json")
-	}
-
 }
 
 func levelsCheck(t *testing.T, hs PlayerHighscores, playerType string) {
