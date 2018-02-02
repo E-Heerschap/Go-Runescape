@@ -90,7 +90,7 @@ func GetRankings(skill int64, category int64, amountOfPlayers int64, HttpClient 
 
 	stringWriter := bytes.NewBufferString("http://services.runescape.com/m=hiscore/ranking.json?table=")
 	stringWriter.WriteString(strconv.FormatInt(skill, 10))
-	stringWriter.WriteString("&Category=")
+	stringWriter.WriteString("&category=")
 	stringWriter.WriteString(strconv.FormatInt(category, 10))
 	stringWriter.WriteString("&size=")
 	stringWriter.WriteString(strconv.FormatInt(amountOfPlayers, 10))
